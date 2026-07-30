@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FolioScan</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar">
+        <div>
+          <p class="eyebrow">Folder Scanning Engine</p>
+          <h1>FolioScan</h1>
+        </div>
+        <div id="statusBadge" class="status idle">Idle</div>
+      </section>
+
+      <section class="scan-panel">
+        <label for="filePath">Folder path to scan</label>
+        <div class="input-row">
+          <input
+            id="filePath"
+            type="text"
+            spellcheck="false"
+            value="C:\Users\SAMI\Documents\UiPath\Home Affairs Follow Up folder\data"
+          />
+          <button id="startBtn" type="button">
+            <span class="play">▶</span>
+            Start Scan
+          </button>
+        </div>
+        <p id="message" class="message"></p>
+      </section>
+
+      <section class="stats-grid" aria-label="Processing stats">
+        <article>
+          <span>Files Scanned</span>
+          <strong id="totalCount">0</strong>
+        </article>
+        <article>
+          <span>Rows Created</span>
+          <strong id="savedCount">0</strong>
+        </article>
+        <article>
+          <span>Scan Errors</span>
+          <strong id="skippedCount">0</strong>
+        </article>
+        <article>
+          <span>Job ID</span>
+          <strong id="jobId">-</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <article class="panel">
+          <div class="panel-title">
+            <h2>Live Logs</h2>
+            <button id="clearLogsBtn" type="button" title="Clear logs">Clear</button>
+          </div>
+          <pre id="logs" class="logs">Waiting for scan...</pre>
+        </article>
+
+        <article class="panel">
+          <div class="panel-title">
+            <h2>Output Files</h2>
+          </div>
+          <div id="files" class="files empty">No output yet.</div>
+        </article>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
