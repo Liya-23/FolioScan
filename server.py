@@ -5,7 +5,7 @@ import json
 import threading
 import traceback
 import uuid
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 
 import tornado.ioloop
@@ -52,7 +52,7 @@ JOBS: dict[str, dict] = {}
 
 
 def utc_now() -> str:
-    return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S")
 
 
 def add_log(job: dict, message: str) -> None:
@@ -76,9 +76,7 @@ def _run_with_processor(job_id: str, root: Path, output_dir: Path, threshold):
         # process_folder is expected to return a list of output file paths
         # or yield progress. Adjust the call signature to match your processor.
         result = _process_folder(
-            root_path=str(root),
-            output_dir=str(output_dir),
-            threshold=threshold,
+            folder_path=str(root),
         )
 
         # If process_folder returns a list of saved paths
@@ -177,10 +175,12 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_status(204)
         self.finish()
 
+
 class HealthHandler(BaseHandler):
     def get(self) -> None:
         self.set_header("Content-Type", "application/json")
         self.write({"status": "ok"})
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -196,7 +196,7 @@ class ScanHandler(BaseHandler):
     async def post(self):
         try:
             body = json.loads(self.request.body)
-            root_path = body.get("root_path", "").strip()
+            root_path = body.get("folder_path", "").strip()
             preset = body.get("preset", "1d")
             custom = body.get("custom_date", "")
 
@@ -381,9 +381,10 @@ if __name__ == "__main__":
     Path("outputs").mkdir(exist_ok=True)
     app = make_app()
     app.listen(port)
+    print(f"        ")
     print(f"╔══════════════════════════════════════════╗")
     print(f"║   FolioScan running on port {port}         ║")
-    print(f"║   http://localhost:{port}                ║")
+    print(f"║   http://localhost:{port}                 ║")
     print(f"║   Mode: {_MODE:<33}║")
     print(f"╚══════════════════════════════════════════╝")
     tornado.ioloop.IOLoop.current().start()

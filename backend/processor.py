@@ -190,7 +190,7 @@ def process_folder(folder_path: str, log: LogFn = print) -> dict:
     records = []
     errors = 0
     date_scanned = datetime.now().strftime("%d-%m-%Y %H:%M")
-    output_path = source / "folioscan_output.xlsx"
+    output_path = source / "ITPC2.xlsx"
 
     for index, file_path in enumerate((item for item in source.rglob("*") if item.is_file()), start=1):
         if file_path.resolve() == output_path.resolve():
