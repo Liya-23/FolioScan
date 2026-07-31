@@ -46,7 +46,7 @@ except ImportError:
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent
 FRONTEND_DIR = ROOT / "frontend"
 JOBS: dict[str, dict] = {}
 
